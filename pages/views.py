@@ -16,14 +16,12 @@ def homePageView(request):
     mydb = sqlite3.connect("db.sqlite3")
     curr = mydb.cursor()
 
-    query_progress = '''SELECT minutosJugados, usuario, progresoPorcentual FROM pages_usuario ORDER BY progresoPorcentual DESC'''
+    query_progress = '''SELECT usuario, progresoPorcentual, score FROM pages_usuario ORDER BY progresoPorcentual DESC'''
     rows1 = curr.execute(query_progress)
     data_progress = []
 
-    counter = 0
     for x in rows1:
-        counter += 1
-        data_progress.append([counter, x[0], x[1], x[2]])
+        data_progress.append([x[0], x[1], x[2]])
 
     return render(request, 'pages/index.html', {'values':data_progress})
 
@@ -66,12 +64,24 @@ def dashBoard(request):
     rows1 = curr.execute(query_progress)
     data_progress = []
 
-    counter = 0
     for x in rows1:
-
         data_progress.append([  x[0], x[1]])
 
-    return render(request, 'pages/dashBoard.html', {'values':data_progress})
+    query_instrument = '''SELECT nombre, tiempoMinutos FROM instrumento'''
+    rows2 = curr.execute(query_instrument)
+    data_intrument = [['Instruments', 'Minutes']]
+
+    for x in rows2:
+        data_intrument.append([x[0],x[1]])
+    
+    modified_data = json.dumps(data_intrument)
+    print(data_intrument)
+    print(modified_data)
+    print("Aqui estoy   ")
+
+
+    return render(request, 'pages/dashBoard.html', {'values':data_progress, 'values2':data_intrument})
+
 
 def logout_user(request):
     logout(request)
@@ -112,8 +122,9 @@ def consultUnity(request):
     if request.method == "POST":
         var = (request.body)#.decode()
         dicc = ast.literal_eval(var.decode('utf-8'))
-        #jsonUser = json.loads(var)
+        print(dicc)
         u = usuario.objects.filter(usuario=(dicc['body']))
+        print(u)
         if u is not None:
             print(u[0].toJson())
             return HttpResponse(str(json.dumps(u[0].toJson())).encode('utf-8')) #JsonResponse(jsonUser)
@@ -138,6 +149,7 @@ def registerUnity(request):
         userSqliteRegister.minutosJugados = 0
         userSqliteRegister.usuario = userNew
         userSqliteRegister.password = pswNew
+        userSqliteRegister.score = 0
         userSqliteRegister.save()
         return HttpResponse(str(json.dumps(userSqliteRegister.toJson())).encode('utf-8')) #JsonResponse(jsonUser)
     else:
@@ -148,8 +160,9 @@ def loginUnity(request):
     if request.method == "POST":
         var = (request.body)#.decode()
         dicc = ast.literal_eval(var.decode('utf-8'))
-        #jsonUser = json.loads(var)
+        print(dicc)
         u = usuario.objects.filter(usuario=(dicc['body']))
+        print(u)
         if u is not None:
             print(u[0].toJson())
             return HttpResponse(str(json.dumps(u[0].toJson())).encode('utf-8')) #JsonResponse(jsonUser)

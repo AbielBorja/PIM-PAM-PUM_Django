@@ -23,28 +23,24 @@
 
         function drawBasic() {
 
-            var data = google.visualization.arrayToDataTable([
-                ['City', 'MInutes',],
-                ['abielboga', 1200],
-                ['Luis', 3220],
-                ['prueba', 1300],
-                ['humberto', 1520],
-                ['juan', 220]
-            ]);
+            var data = google.visualization.arrayToDataTable({{values2|safe}});
 
-            var options = {
-                title: 'Score for each player',
-                chartArea: {width: '50%'},
-                hAxis: {    
-                title: 'Minutes played',
+            var options = { 
+                title: 'Intruments Played',
+                chartArea: {width: '60%'},
+                hAxis: {
+                title: 'Intruments',
                 minValue: 0
+                },
+                vAxis: {
+                title: 'Minutes'
                 }
             };
 
             var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
 
             chart.draw(data, options);
-            }
+        }
     </script>  
 
 </head>
@@ -99,11 +95,8 @@
         </div>
     </div>
 
-    <div class="container px-lg-5">
-        <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
-            <div id="chart_div"></div>
-        </div>
-    </div>
+    <div id="chart_div"></div>
+
 
 
 </body>
