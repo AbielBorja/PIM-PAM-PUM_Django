@@ -27,11 +27,13 @@
 
             var options = { 
                 title: 'Intruments Played',
-                chartArea: {width: '60%'},
+                chartArea: {width: '40%'},
                 hAxis: {
                 title: 'Intruments',
                 minValue: 0
                 },
+                width: 1500,
+                height: 400,
                 vAxis: {
                 title: 'Minutes'
                 }
@@ -41,7 +43,35 @@
 
             chart.draw(data, options);
         }
-    </script>  
+    </script>
+
+    <script>
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawBarColors);
+
+    function drawBarColors() {
+        var data = google.visualization.arrayToDataTable({{data_quiz|safe}});
+
+        var options = {
+            title: 'Quiz data',
+            chartArea: {width: '40%'},
+            colors: ['green', 'red'],
+            hAxis: {
+            minValue: 0
+            },
+            width: 1500,
+            height: 400,
+            vAxis: {
+            title: 'Quiz'
+            }
+        };
+        
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div_questions'));
+        chart.draw(data, options);
+    }
+    </script>
+
+
 
 </head>
 
@@ -72,30 +102,39 @@
 
     <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
-            <div class="wrap-table100">
-                <div class="table">
-                    <div class="row header">
-                        <div class="cell">
-                            Instrument
-                        </div>
-                        <div class="cell">
-                            Minutes Played
-                        </div>
-                    </div>
-
-                    {% for d in values  %}
-                        <div class="row">
-                            {% for x in d %}
-                                <div class="cell">{{x}}</div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+            <div class="container-table100">
+                <h2>Global Score</h2>
+                 <div class="wrap-table100">
+                     <div class="table">
+                         <div class="row header">
+                             <div class="cell">
+                                 Username
+                             </div>
+                             <div class="cell">
+                                 Progress percentage
+                             </div>
+                             <div class="cell">
+                                 Score
+                             </div>
+                         </div>
+         
+                         {% for d in values  %}
+                             <div class="row">
+                                 {% for x in d %}
+                                     <div class="cell">{{x}}</div>
+                                 {% endfor %}
+                             </div>
+                         {% endfor %}
+                     </div>
+                 </div>
+             </div>
         </div>
     </div>
 
     <div id="chart_div"></div>
+
+    <div id="chart_div_questions"></div>
+
 
 
 
