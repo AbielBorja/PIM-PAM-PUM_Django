@@ -115,15 +115,15 @@ def private_page(request):
 def getInfo(request):
     if request.user.is_authenticated:
         if request.method == "POST":
+            print("Entre en Post")
             username = request.POST['username']
             password = request.POST['password']
             firstName = request.POST['first_name']
-            print(firstName)
             user = authenticate(request, username=username, password=password, firstName=firstName)
+            print(user)
             if user is not None:
                 print("entre en User not none")
                 getInfoUsuario = usuario.objects.filter(usuario=username)
-                print(getInfoUsuario)
                 print(getInfoUsuario[0].toJson())
                 getInfoUsuario = getInfoUsuario[0].toJson()
                 return render(request, 'pages/get.html', {'datos':getInfoUsuario})
