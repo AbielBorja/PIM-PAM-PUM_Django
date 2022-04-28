@@ -114,9 +114,7 @@ def private_page(request):
 
 def getInfo(request):
     if request.user.is_authenticated:
-        print("entre en autenticazión")
         if request.method == "POST":
-            print("entre en POST")
             username = request.POST['username']
             password = request.POST['password']
             firstName = request.POST['first_name']
@@ -133,15 +131,69 @@ def getInfo(request):
                 messages.error(request, ('No user Found'))
                 return redirect('GET')  
         else:
+            form = RegisterUserForm()
             return render(request, 'pages/get.html')
     else:
         return redirect('login')
 
 def updateInfo(request):
-    pass
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            print("entre en POST")
+            username = request.POST['username']
+            password = request.POST['password']
+            Newusername = request.POST['NewUsername']
+            Newpassword = request.POST['NewPassword']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                print("entre en User not none")
+                getInfoUsuario = usuario.objects.filter(usuario=username)
+                print(getInfoUsuario[0].toJson())
+                getInfoUsuario = getInfoUsuario[0]
+                getInfoUsuario.usuario = Newusername
+                getInfoUsuario.save()
+                getInfoUsuario.password = Newpassword
+                getInfoUsuario.save()
+                return render(request, 'pages/update.html', {'datos':getInfoUsuario})
+            else:
+                messages.error(request, ('No user Found'))
+                return redirect('UPDATE')  
+        else:
+            return render(request, 'pages/update.html')
+    else:
+        return redirect('login')
 
 def createNewUser(request):
-    pass
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = RegisterUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password1']
+                user = authenticate(username=username, password=password)
+                login(request,user)
+                userSqliteRegister = usuario()
+                userSqliteRegister.progresoPorcentual = 0
+                userSqliteRegister.minutosJugados = 0
+                userSqliteRegister.usuario = username
+                userSqliteRegister.password = password
+                userSqliteRegister.score = 0
+                userSqliteRegister.save()
+                messages.success(request, ('Registration seccessful')) #termina registro
+
+                userSqliteRegister = usuario.objects.filter(usuario=username)
+                userSqliteRegister = userSqliteRegister[0].toJson()
+                print(userSqliteRegister)
+                return render(request, 'pages/create.html', {'datos':userSqliteRegister})
+            else:
+                messages.error(request, ('Register Failed'))
+                return redirect('CREATE')
+        else:
+            form = RegisterUserForm()
+            return render(request, 'pages/create.html',{'form':form})
+    else:
+        return redirect('login')
 
 def deleteUser(request):
     pass

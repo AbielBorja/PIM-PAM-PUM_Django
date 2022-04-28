@@ -19,7 +19,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-lg-5">
-            <a class="navbar-brand" href="#!">PIM - PAM - PUM</a>
+            <a class="navbar-brand" href='{% url "home" %}'>PIM - PAM - PUM</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -71,7 +71,7 @@
                             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-cloud-download"></i></div>
                             <h2 class="fs-4 fw-bold">Update Info</h2>
                             <p class="mb-0">Tops Score of the game community.</p>
-                            <a class="btn btn-primary btn-lg" href="js/topScore.json">Tops Scores</a>
+                            <a class="btn btn-primary btn-lg" href="{% url 'UPDATE' %}">Tops Scores</a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                             <div class="feature bg-primary bg-gradient text-white   rounded-3 mb-4 mt-n4"><i class="bi bi-card-heading"></i></div>
                             <h2 class="fs-4 fw-bold">Create new user</h2>
                             <p class="mb-0">Instruments unlocked throughout the video game</p>
-                            <a class="btn btn-primary btn-lg" href="js/intruments.json">Instruments</a>
+                            <a class="btn btn-primary btn-lg" href="{% url 'CREATE' %}">Instruments</a>
                         </div>
                     </div>
                 </div>
