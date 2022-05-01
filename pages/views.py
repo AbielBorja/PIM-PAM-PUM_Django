@@ -282,7 +282,7 @@ def saveDataUnity(request):
             print(u[0].toJson())
             userSqliteUpdate = u[0]
             userSqliteUpdate.score = dicc['score']
-            userSqliteUpdate.score = dicc['score2']
+            userSqliteUpdate.score2 = dicc['score2']
             userSqliteUpdate.save()
             return HttpResponse(str(json.dumps(u[0].toJson())).encode('utf-8')) #JsonResponse(jsonUser)
         else:
