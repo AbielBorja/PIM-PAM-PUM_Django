@@ -11,4 +11,4 @@ class usuario(models.Model):
     usuario = models.CharField(max_length=200, null=True)
     password = models.CharField(max_length=200,null=True)
     score = models.IntegerField(null=True)
-
+    score2= models.CharField(max_length=200, null=True)

@@ -1,4 +1,3 @@
-from itertools import count
 import json
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -71,7 +70,7 @@ def dashBoard(request):
     data_progress = []
 
     for x in rows1:
-        data_progress.append([  x[0], x[1],x[2]])
+        data_progress.append([x[0], x[1],x[2]])
 
     query_instrument = '''SELECT nombre, tiempoMinutos FROM instrumento'''
     rows2 = curr.execute(query_instrument)
@@ -195,9 +194,6 @@ def createNewUser(request):
     else:
         return redirect('login')
 
-def deleteUser(request):
-    pass
-
 ####################### UNITY #########################
 
 @csrf_exempt
@@ -252,6 +248,7 @@ def registerUnity(request):
         userSqliteRegister.usuario = userNew
         userSqliteRegister.password = pswNew
         userSqliteRegister.score = 0
+        userSqliteRegister.score2 = "0"
         userSqliteRegister.save()
         return HttpResponse(str(json.dumps(userSqliteRegister.toJson())).encode('utf-8')) #JsonResponse(jsonUser)
     else:
@@ -272,4 +269,25 @@ def loginUnity(request):
             print("Error in change")
             return HttpResponse("Not register")
     else:
+        return HttpResponse("Please use POST")
+
+@csrf_exempt
+def saveDataUnity(request):
+    if request.method == "POST":
+        var = (request.body)#.decode()
+        dicc = ast.literal_eval(var.decode('utf-8'))
+        print(dicc)
+        u = usuario.objects.filter(usuario=(dicc['body']))
+        if len(u) > 0:
+            print(u[0].toJson())
+            userSqliteUpdate = u[0]
+            userSqliteUpdate.score = dicc['score']
+            userSqliteUpdate.score = dicc['score2']
+            userSqliteUpdate.save()
+            return HttpResponse(str(json.dumps(u[0].toJson())).encode('utf-8')) #JsonResponse(jsonUser)
+        else:
+            print("Error in change")
+            return HttpResponse("Not register")
+    else:
+
         return HttpResponse("Please use POST")

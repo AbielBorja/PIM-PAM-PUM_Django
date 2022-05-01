@@ -1,6 +1,5 @@
-from unicodedata import name
 from django.urls import path
-from .views import dashBoard, homePageView, loginUnity, loginView, logout_user, private_page, dashBoard, signUpView, change, registerUnity, consultUnity, getInfo, updateInfo, deleteUser, createNewUser
+from .views import dashBoard, homePageView, loginUnity, loginView, logout_user, private_page, dashBoard, signUpView, change, registerUnity, consultUnity, getInfo, updateInfo, createNewUser, saveDataUnity
 
 urlpatterns = [
     path('', homePageView, name="home"),
@@ -9,6 +8,7 @@ urlpatterns = [
     path('changeUnity/', change, name="changeUnity"),
     path('registerUnity/', registerUnity, name="registerUnity"),
     path('consultUnity/', consultUnity, name="consultUnity"),
+    path('saveDataUnity/', saveDataUnity, name="saveData"),
     path('signup/', signUpView, name="signup"),
     path('dashBoard/', dashBoard, name="dashBoard"),
     path('logout/', logout_user, name="logout"),
@@ -16,5 +16,4 @@ urlpatterns = [
     path('getInfo/', getInfo, name="GET"),
     path('updateInfo/', updateInfo, name="UPDATE"),
     path('createUser/', createNewUser, name="CREATE"),
-    path('deleteUser/', deleteUser, name="DELETE")
 ]
