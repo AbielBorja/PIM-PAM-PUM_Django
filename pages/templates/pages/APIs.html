@@ -14,6 +14,117 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{% static 'pages/css/stylesAPIs.css' %}" rel="stylesheet" />
+    <!-- GOOGLE CHARTS -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+            })
+        })()
+    </script>
+
+    <script>
+      google.charts.load('current', {packages: ['corechart', 'bar']});
+      google.charts.setOnLoadCallback(drawBasic);
+
+      function drawBasic() {
+            var data = google.visualization.arrayToDataTable([
+              ['Description', 'Values',],
+              ['Minutos Jugados', {{ datos.minutosJugados}}],
+              ['Score', {{ datos.score }}],
+            ]);
+            
+            var options = {
+              title: 'Profile Data',
+                chartArea: {width: '40%'},
+                hAxis: {
+                title: 'Data',
+                minValue: 0
+                },
+                width: 1500,
+                height: 400,
+                vAxis: {
+                title: 'Data'
+                }
+            };
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+    </script>
+
+    <script>
+      google.charts.load('current', {packages: ['corechart', 'bar']});
+      google.charts.setOnLoadCallback(drawBasic);
+
+      function drawBasic() {
+            var data = google.visualization.arrayToDataTable([
+              ['Description', 'Progress',],
+              ['Progress', {{ datos.progresoPorcentual}}],
+            ]);
+            
+            var options = {
+              title: 'Profile Data',
+              colors: ['green'],
+              chartArea: {width: '40%'},
+              hAxis: {
+              title: 'Percentage',
+              minValue: 0,
+              maxValue: 100
+              },
+              width: 1500,
+              height: 400,
+              vAxis: {
+              title: 'Progress'
+              }
+            };
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div_progress'));
+            chart.draw(data, options);
+          }
+    </script>
+
+    <script>
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+            var data = google.visualization.arrayToDataTable({{instruments|safe}});
+
+            var options = { 
+                title: 'Intruments Played',
+                chartArea: {width: '40%'},
+                hAxis: {
+                title: 'Intruments',
+                minValue: 0
+                },
+                width: 1500,
+                height: 400,
+                vAxis: {
+                title: 'Minutes'
+                }
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div_instruments'));
+
+            chart.draw(data, options);
+        }
+    </script>
 </head>
 
 <body>
@@ -89,6 +200,17 @@
             </div>
         </div>
     </section>
+
+    <div id="chart_div"></div>
+    <div id="chart_div_progress"></div>
+    <div id="chart_div_instruments"></div>
+
+
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+            {{ datos.usuario }}
+        </div>
+    </div>
 
     <script src="{% static 'pages/js/bootstrap.bundle.min.js' %}"></script>
 </body>

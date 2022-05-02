@@ -31,7 +31,21 @@ def loginView(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('APIs_pages')
+            getInfoUsuario = usuario.objects.filter(usuario=username)
+            print(getInfoUsuario[0].toJson())
+            getInfoUsuario = getInfoUsuario[0].toJson()
+
+            mydb = sqlite3.connect("db.sqlite3")
+            curr = mydb.cursor()
+            
+            query_instrument = '''SELECT nombre, tiempoMinutos FROM instrumento'''
+            rows2 = curr.execute(query_instrument)
+            data_intrument = [['Instruments', 'Minutes']]
+
+            for x in rows2:
+                data_intrument.append([x[0],x[1]])
+
+            return render(request, 'pages/APIs.html', {'datos':getInfoUsuario, 'instruments':data_intrument})
         else:
             messages.error(request, ('Bad login'))
             return redirect('login')   
@@ -54,8 +68,16 @@ def signUpView(request):
             userSqliteRegister.password = password
             userSqliteRegister.score = 0
             userSqliteRegister.save()
-            messages.success(request, ('Registration seccessful'))
-            return redirect('APIs_pages') 
+            getInfoUsuario = usuario.objects.filter(usuario=username)
+            print(getInfoUsuario[0].toJson())
+            getInfoUsuario = getInfoUsuario[0].toJson()
+
+            mydb = sqlite3.connect("db.sqlite3")
+            curr = mydb.cursor()
+            
+            messages.success(request, ('Registration successful'))
+            return render(request, 'pages/APIs.html', {'datos':getInfoUsuario})
+
     else:
         #form = UserCreationForm()
         form = RegisterUserForm()
@@ -107,7 +129,20 @@ def logout_user(request):
 
 def private_page(request):
     if request.user.is_authenticated:
-        return render(request, 'pages/APIs.html')
+        mydb = sqlite3.connect("db.sqlite3")
+        curr = mydb.cursor()
+        
+        query_instrument = '''SELECT nombre, tiempoMinutos FROM instrumento'''
+        rows2 = curr.execute(query_instrument)
+        data_intrument = [['Instruments', 'Minutes']]
+
+        for x in rows2:
+            data_intrument.append([x[0],x[1]])
+
+        getInfoUsuario = usuario.objects.filter(usuario=request.user)
+        print(getInfoUsuario[0].toJson())
+        getInfoUsuario = getInfoUsuario[0].toJson()
+        return render(request, 'pages/APIs.html', {'datos':getInfoUsuario, 'instruments':data_intrument})
     else:
         return redirect('login')
 
@@ -264,6 +299,7 @@ def loginUnity(request):
         print(u)
         if u is not None:
             print(u[0].toJson())
+            print("----------- TERMINA LOGIN --------------")
             return HttpResponse(str(json.dumps(u[0].toJson())).encode('utf-8')) #JsonResponse(jsonUser)
         else:
             print("Error in change")
