@@ -50,14 +50,12 @@
         <div class="ui-layout-container">
             <div class="ui-section-hero__layout ui-layout-grid ui-layout-grid-2">
                 <!-- DESCRIPTION -->
-                <div>
-                    <h1>Description</h1>
+                <h1>Description</h1>
                     <p class="ui-text-intro">The game consists of a simulation of different percussion musical instruments, in which the player will have interaction with different instruments. Each instrument will have its specifications and difficulty of use.</p>
                     <!-- CTA -->
                     <div class="ui-component-cta ui-layout-flex">
-                        <a href='{% url "APIs_pages" %}' role="link" aria-label="#" class="ui-component-button ui-component-button-normal ui-component-button-primary">Download</a>
-                    </div>
-                </div>
+                        <a href='{% static "pages/PPP.zip" %}' class="ui-component-button ui-component-button-normal ui-component-button-primary" download>Download</a>
+                    </div>  
                 <!-- IMAGE -->
                 <img src="{% static 'pages/img/Baterista.gif' %}" loading="lazy" alt="#" class="ui-image-half-right">
             </div>
